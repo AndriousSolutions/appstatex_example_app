@@ -27,6 +27,8 @@ class _MyHomePageState extends StateX<MyHomePage> {
     //
     Widget widget;
 
+    final theme = Theme.of(context);
+
     if (con.useMaterial) {
       //
       widget = Center(
@@ -35,9 +37,7 @@ class _MyHomePageState extends StateX<MyHomePage> {
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: TextStyle(fontSize: 18),
             ),
             state(
               (context) => Text(
@@ -54,29 +54,25 @@ class _MyHomePageState extends StateX<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.only(top: 0, bottom: 0),
-              child: Text('You have pushed the button this many times:',
-                  style: TextStyle(fontSize: 13)),
-            ),
             Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 0),
-              child: state(
-                (context) => Text(
+              padding: const EdgeInsets.only(top: 150.0, bottom: 50.0),
+              child: Text(
+                'You have pushed the button this many times:',
+                style: theme.textTheme.bodyLarge,
+              ),
+            ),
+            state(
+              (_) => Padding(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 50.0),
+                child: Text(
                   con.data,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: theme.textTheme.headlineMedium,
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 0),
-              child: CupertinoButton.filled(
-                onPressed: () {
-                  // This code is greyed out by the IDE because it can never bt reached.
-                  setState(con.onPressed);
-                },
-                child: const Text('Add'),
-              ),
+            CupertinoButton.filled(
+              onPressed: con.onPressed,
+              child: const Text('Add'),
             ),
           ],
         ),

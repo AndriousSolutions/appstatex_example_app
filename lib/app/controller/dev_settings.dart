@@ -1,4 +1,189 @@
+///
 import '../../_view.dart';
+
+///
+import '../../_controller.dart';
+
+///
+class DevTools extends StateXController {
+  /// Singleton Pattern
+  factory DevTools() => _this ??= DevTools._();
+  DevTools._();
+  static DevTools? _this;
+
+  ///
+  bool get debugShowCheckedModeBanner => _debugShowCheckedModeBanner ??=
+      Prefs.getBool('debugShowCheckedModeBanner', true);
+  set debugShowCheckedModeBanner(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugShowCheckedModeBanner', v);
+      _debugShowCheckedModeBanner = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugShowCheckedModeBanner;
+
+  ///
+  bool get debugShowMaterialGrid =>
+      _debugShowMaterialGrid ??= Prefs.getBool('debugShowMaterialGrid', false);
+  set debugShowMaterialGrid(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugShowMaterialGrid', v);
+      _debugShowMaterialGrid = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugShowMaterialGrid;
+
+  ///
+  bool get debugPaintSizeEnabled =>
+      _debugPaintSizeEnabled ??= Prefs.getBool('debugPaintSizeEnabled', false);
+  set debugPaintSizeEnabled(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintSizeEnabled', v);
+      _debugPaintSizeEnabled = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugPaintSizeEnabled;
+
+  ///
+  bool get debugPaintBaselinesEnabled => _debugPaintBaselinesEnabled ??=
+      Prefs.getBool('debugPaintBaselinesEnabled', false);
+  set debugPaintBaselinesEnabled(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintBaselinesEnabled', v);
+      _debugPaintBaselinesEnabled = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugPaintBaselinesEnabled;
+
+  ///
+  bool get debugPaintLayerBordersEnabled => _debugPaintLayerBordersEnabled ??=
+      Prefs.getBool('debugPaintLayerBordersEnabled', false);
+  set debugPaintLayerBordersEnabled(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintLayerBordersEnabled', v);
+      _debugPaintLayerBordersEnabled = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugPaintLayerBordersEnabled;
+
+  ///
+  bool get debugPaintPointersEnabled => _debugPaintPointersEnabled ??=
+      Prefs.getBool('debugPaintPointersEnabled', false);
+  set debugPaintPointersEnabled(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintPointersEnabled', v);
+      _debugPaintPointersEnabled = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugPaintPointersEnabled;
+
+  ///
+  bool get debugRepaintRainbowEnabled => _debugRepaintRainbowEnabled ??=
+      Prefs.getBool('debugRepaintRainbowEnabled', false);
+  set debugRepaintRainbowEnabled(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugRepaintRainbowEnabled', v);
+      _debugRepaintRainbowEnabled = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugRepaintRainbowEnabled;
+
+  ///
+  bool get debugRepaintTextRainbowEnabled => _debugRepaintTextRainbowEnabled ??=
+      Prefs.getBool('debugRepaintTextRainbowEnabled', false);
+  set debugRepaintTextRainbowEnabled(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('debugRepaintTextRainbowEnabled', v);
+      _debugRepaintTextRainbowEnabled = v;
+      setSettingState();
+    }
+  }
+
+  bool? _debugRepaintTextRainbowEnabled;
+
+  ///
+  bool get showPerformanceOverlay => _showPerformanceOverlay ??=
+      Prefs.getBool('showPerformanceOverlay', false);
+  set showPerformanceOverlay(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('showPerformanceOverlay', v);
+      _showPerformanceOverlay = v;
+      setSettingState();
+    }
+  }
+
+  bool? _showPerformanceOverlay;
+
+  ///
+  bool get showSemanticsDebugger =>
+      _showSemanticsDebugger ??= Prefs.getBool('showSemanticsDebugger', false);
+  set showSemanticsDebugger(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('showSemanticsDebugger', v);
+      _showSemanticsDebugger = v;
+      setSettingState();
+    }
+  }
+
+  bool? _showSemanticsDebugger;
+
+  ///
+  bool get useMaterial3 =>
+      _useMaterial3 ??= Prefs.getBool('useMaterial3', false);
+  set useMaterial3(bool? v) {
+    //
+    if (v != null) {
+      //
+      Prefs.setBool('useMaterial3', v);
+      _useMaterial3 = v;
+      setSettingState();
+    }
+  }
+
+  bool? _useMaterial3;
+
+  /// Call the setState() functions
+  void setSettingState() {
+    //
+    setState(() {});
+
+    rootState?.setState(() {});
+  }
+}
 
 ///
 class DevToolsSettings extends StatefulWidget {
@@ -10,19 +195,6 @@ class DevToolsSettings extends StatefulWidget {
 
   List<Widget> get devSettings {
     final List<Widget> widgets = <Widget>[
-      ListTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: const Text('Show rendering performance overlay'),
-        onTap: () {
-          con.showPerformanceOverlay = !con.showPerformanceOverlay;
-        },
-        trailing: Switch(
-          value: con.showPerformanceOverlay,
-          onChanged: (bool value) {
-            con.showPerformanceOverlay = value;
-          },
-        ),
-      ),
       ListTile(
         leading: const Icon(Icons.bug_report),
         title: const Text('Show DEBUG banner'),
@@ -36,16 +208,30 @@ class DevToolsSettings extends StatefulWidget {
           },
         ),
       ),
+      if (!(con.state?.usingCupertino ?? false))
+        ListTile(
+          leading: const Icon(Icons.screen_lock_landscape_sharp),
+          title: const Text('Use Material 3 Design'),
+          onTap: () {
+            con.useMaterial3 = !con.useMaterial3;
+          },
+          trailing: Switch(
+            value: con.useMaterial3,
+            onChanged: (bool value) {
+              con.useMaterial3 = value;
+            },
+          ),
+        ),
       ListTile(
-        leading: const Icon(Icons.screen_lock_landscape_sharp),
-        title: const Text('Use Material 3 Design'),
+        leading: const Icon(Icons.picture_in_picture),
+        title: const Text('Show rendering performance overlay'),
         onTap: () {
-          con.useMaterial3 = !con.useMaterial3;
+          con.showPerformanceOverlay = !con.showPerformanceOverlay;
         },
         trailing: Switch(
-          value: con.useMaterial3,
+          value: con.showPerformanceOverlay,
           onChanged: (bool value) {
-            con.useMaterial3 = value;
+            con.showPerformanceOverlay = value;
           },
         ),
       ),
@@ -169,174 +355,4 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         children: widget.devSettings,
       );
-}
-
-///
-class DevTools extends StateXController {
-  /// Singleton Pattern
-  factory DevTools() => _this ??= DevTools._();
-  DevTools._();
-  static DevTools? _this;
-
-  ///
-  bool get debugShowCheckedModeBanner => _debugShowCheckedModeBanner;
-  set debugShowCheckedModeBanner(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugShowCheckedModeBanner = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugShowCheckedModeBanner = true;
-
-  ///
-  bool get debugShowMaterialGrid => _debugShowMaterialGrid;
-  set debugShowMaterialGrid(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugShowMaterialGrid = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugShowMaterialGrid = false;
-
-  ///
-  bool get debugPaintSizeEnabled => _debugPaintSizeEnabled;
-  set debugPaintSizeEnabled(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugPaintSizeEnabled = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugPaintSizeEnabled = false;
-
-  ///
-  bool get debugPaintBaselinesEnabled => _debugPaintBaselinesEnabled;
-  set debugPaintBaselinesEnabled(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugPaintBaselinesEnabled = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugPaintBaselinesEnabled = false;
-
-  ///
-  bool get debugPaintLayerBordersEnabled => _debugPaintLayerBordersEnabled;
-  set debugPaintLayerBordersEnabled(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugPaintLayerBordersEnabled = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugPaintLayerBordersEnabled = false;
-
-  ///
-  bool get debugPaintPointersEnabled => _debugPaintPointersEnabled;
-  set debugPaintPointersEnabled(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugPaintPointersEnabled = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugPaintPointersEnabled = false;
-
-  ///
-  bool get debugRepaintRainbowEnabled => _debugRepaintRainbowEnabled;
-  set debugRepaintRainbowEnabled(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugRepaintRainbowEnabled = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugRepaintRainbowEnabled = false;
-
-  ///
-  bool get debugRepaintTextRainbowEnabled => _debugRepaintTextRainbowEnabled;
-  set debugRepaintTextRainbowEnabled(bool? v) {
-    //
-    if (v != null) {
-      //
-      _debugRepaintTextRainbowEnabled = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _debugRepaintTextRainbowEnabled = false;
-
-  ///
-  bool get showPerformanceOverlay => _showPerformanceOverlay;
-  set showPerformanceOverlay(bool? v) {
-    //
-    if (v != null) {
-      //
-      _showPerformanceOverlay = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _showPerformanceOverlay = false;
-
-  ///
-  bool get showSemanticsDebugger => _showSemanticsDebugger;
-  set showSemanticsDebugger(bool? v) {
-    //
-    if (v != null) {
-      //
-      _showSemanticsDebugger = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _showSemanticsDebugger = false;
-
-  ///
-  bool get useMaterial3 => _useMaterial3;
-  set useMaterial3(bool? v) {
-    //
-    if (v != null) {
-      //
-      _useMaterial3 = v;
-
-      setSettingState();
-    }
-  }
-
-  bool _useMaterial3 = true;
-
-  /// Call the setState() functions
-  void setSettingState() {
-    //
-    setState(() {});
-
-    rootState?.setState(() {});
-  }
 }

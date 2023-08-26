@@ -21,22 +21,33 @@ class MyApp extends StatefulWidget {
   State createState() => _MyAppState();
 }
 
+/// The 'root' State object
 class _MyAppState extends AppStateX<MyApp> {
   _MyAppState()
       : dev = DevTools(),
         colorPicker = ColorPickerController(),
         con = MyHomePageController(),
-        super(
-          controllers: [
-            GoogleFontsController(),
-          ],
-        );
+        super(controller: MyAppController(), controllers: [
+          Prefs(),
+          GoogleFontsController(),
+        ]) {
+    app = controller as MyAppController;
+  }
 
+  late MyAppController app;
   final DevTools dev;
   final ColorPickerController colorPicker;
-  final MyHomePageController con;
+  late MyHomePageController con;
+  late GoogleFontsController? fonts;
 
-  // This widget is the root of your application.
+  @override
+  void initState() {
+    super.initState();
+    fonts = controllerByType<GoogleFontsController>();
+  }
+
+  // This widget is the root of your application
+  // The buildIn() is only called once ever.
   @override
   Widget buildIn(BuildContext context) {
     //
@@ -51,7 +62,8 @@ class _MyAppState extends AppStateX<MyApp> {
       return true;
     }());
 
-    if (con.useMaterial) {
+    // Which interface design to display
+    if (app.useMaterial) {
       //
       return _materialView();
     } else {
@@ -60,45 +72,7 @@ class _MyAppState extends AppStateX<MyApp> {
     }
   }
 
-  Widget _cupertinoView() {
-    //
-    return CupertinoApp(
-      showPerformanceOverlay: dev.showPerformanceOverlay,
-      // checkerboardRasterCacheImages: dev.checkerboardRasterCacheImages,
-      // checkerboardOffscreenLayers: dev.checkerboardOffscreenLayers,
-      showSemanticsDebugger: dev.showSemanticsDebugger,
-      debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
-      title: 'Flutter Demo',
-      theme: const CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(
-          textStyle: TextStyle(fontFamily: 'MaShanZheng'),
-        ),
-      ),
-      locale: const Locale('en', 'CA'),
-      localizationsDelegates: const [
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
-      home: CupertinoPageScaffold(
-        key: const Key('Scaffold'),
-        child: CustomScrollView(slivers: <Widget>[
-          CupertinoSliverNavigationBar(
-            largeTitle: const Text('Counter Page Demo'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Material(child: con.popupMenuButton),
-              ],
-            ),
-          ),
-          const SliverToBoxAdapter(child: MyHomePage()),
-        ]),
-      ),
-    );
-  }
-
+  /// Material
   Widget _materialView() {
     // The selected color scheme
     final colorScheme =
@@ -107,20 +81,21 @@ class _MyAppState extends AppStateX<MyApp> {
     return MaterialApp(
       debugShowMaterialGrid: dev.debugShowMaterialGrid,
       showPerformanceOverlay: dev.showPerformanceOverlay,
-      // checkerboardRasterCacheImages: dev.checkerboardRasterCacheImages,
-      // checkerboardOffscreenLayers: dev.checkerboardOffscreenLayers,
       showSemanticsDebugger: dev.showSemanticsDebugger,
       debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
-      title: 'Flutter Demo',
+      title: app.title,
       theme: ThemeData(
         colorScheme: colorScheme,
         useMaterial3: dev.useMaterial3,
-        // textTheme: Theme.of(context).textTheme.apply(
-        //       fontFamily: 'MaShanZheng',
-        //     ),
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: fonts?.font,
+            ),
       ),
       locale: const Locale('en', 'CA'),
       localizationsDelegates: const [
+        DefaultWidgetsLocalizations.delegate,
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -139,6 +114,72 @@ class _MyAppState extends AppStateX<MyApp> {
           child: const Icon(Icons.add),
         ),
       ),
+    );
+  }
+
+  /// Cupertino
+  Widget _cupertinoView() {
+    //
+    return CupertinoApp(
+      showPerformanceOverlay: dev.showPerformanceOverlay,
+      showSemanticsDebugger: dev.showSemanticsDebugger,
+      debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
+      title: app.title,
+      theme: CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(
+          textStyle: TextStyle(
+            fontFamily: fonts?.font,
+          ),
+        ),
+      ),
+      locale: const Locale('en', 'CA'),
+      localizationsDelegates: const [
+        DefaultWidgetsLocalizations.delegate,
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      home: CupertinoTabScaffold(
+          key: const Key('Scaffold'),
+          tabBar: CupertinoTabBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.search_circle_fill),
+                label: 'Settings',
+              ),
+            ],
+          ),
+          tabBuilder: (BuildContext context, int index) {
+            //
+            if (index == 0) {
+              //
+              return CustomScrollView(slivers: <Widget>[
+                CupertinoSliverNavigationBar(
+                  largeTitle: Text(
+                    'Counter Page Demo',
+                    style: TextStyle(fontFamily: fonts?.font),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Material(child: con.popupMenuButton),
+                    ],
+                  ),
+                ),
+                const SliverToBoxAdapter(child: MyHomePage()),
+              ]);
+            } else {
+              //
+              return Drawer(child: con.drawer);
+            }
+          }),
     );
   }
 }
