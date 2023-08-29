@@ -16,10 +16,10 @@ class GoogleFontsController extends StateXController {
   @override
   Future<bool> initAsync() async {
     // Ensure this is called once
-    if (init) {
-      return init;
+    if (_init) {
+      return _init;
     }
-    init = true;
+    _init = true;
 
     // Determine the 'current' font
     _font = await Prefs.getStringF('font', GoogleFonts.roboto().fontFamily);
@@ -36,11 +36,11 @@ class GoogleFontsController extends StateXController {
     _initFont(GoogleFonts.ptSans);
     //ignore: unused_local_variable
     List<void> list = await GoogleFonts.pendingFonts();
-    return init;
+    return _init;
   }
 
   // Flag the init routine
-  bool init = false;
+  bool _init = false;
 
   /// List of available fonts
   List<String> get fonts => _fonts;
@@ -59,6 +59,7 @@ class GoogleFontsController extends StateXController {
     return init;
   }
 
+  /// Retrieve the 'current' font
   String get font => _font;
   String _font = '';
 
@@ -92,10 +93,11 @@ class GoogleFontsController extends StateXController {
 
     await showFonts(
       onOK: () async {
-        if (selectedIndex > 0 && selectedIndex < fontNames.length) {
+        // within range of the fonts List
+        if (selectedIndex >= 0 && selectedIndex < fontNames.length) {
           _font = fonts[selectedIndex];
-          await Prefs.setString('font', _font);
-          rootState?.setState(() {});
+          await Prefs.setString('font', _font); // record the selected font
+          rootState?.setState(() {}); // The 'first' State object
         }
       },
       child: spinner,
@@ -143,7 +145,4 @@ class GoogleFontsController extends StateXController {
       },
     );
   }
-
-  @override
-  void onAsyncError(FlutterErrorDetails details) {}
 }

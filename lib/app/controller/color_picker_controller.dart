@@ -15,13 +15,11 @@ class ColorPickerController extends StateXController {
     ValueChanged<Color>? onColorChange,
     ValueChanged<ColorSwatch<int?>>? onChange,
   }) async {
-    //
-    final context = state!.context;
+    // controllers have access to the 'latest' context
+    var context = lastContext!;
 
     // Get the current colour.
     ColorPicker.color = _materialColor;
-//    ColorPicker.color = Color(Theme.of(context).primaryColor.value);
-//    ColorPicker.color = Color(Theme.of(context).colorScheme.primary.value);
 
     await ColorPicker.showColorPicker(
       context: context,

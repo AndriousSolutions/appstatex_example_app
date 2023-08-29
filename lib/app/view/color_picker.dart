@@ -47,8 +47,6 @@ class ColorPicker {
 
   static List<ColorSwatch<int?>> get colors => Colors.primaries;
 
-//  static Text title = const Text('Colour Theme');
-
   static Future<ColorSwatch<int>?> showColorPicker({
     required BuildContext context,
     ValueChanged<Color>? onColorChange,

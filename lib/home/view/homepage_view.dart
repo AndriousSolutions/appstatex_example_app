@@ -16,11 +16,28 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends StateX<MyHomePage> {
   _MyHomePageState()
       : super(controller: MyHomePageController(), useInherited: true) {
-    add(ColorPickerController());
     con = controller as MyHomePageController;
   }
 
   late MyHomePageController con;
+
+  @override
+  void initState() {
+    super.initState();
+    // A list of ways to get the StateXController object, MyAppController
+    app = rootState?.controllerByType<MyAppController>();
+    app = rootCon as MyAppController;
+    app = rootState?.controller as MyAppController;
+    app = MyAppController();
+  }
+
+  // The app's controller
+  MyAppController? app;
+
+  // Place a breakpoint here and step through to see what's going on.
+  @override
+  //ignore: unnecessary_overrides
+  Widget build(context) => super.build(context);
 
   @override
   Widget buildIn(BuildContext context) {
@@ -29,7 +46,7 @@ class _MyHomePageState extends StateX<MyHomePage> {
 
     final theme = Theme.of(context);
 
-    if (con.useMaterial) {
+    if (app?.useMaterial ?? true) {
       //
       widget = Center(
         child: Column(

@@ -178,9 +178,9 @@ class DevTools extends StateXController {
 
   /// Call the setState() functions
   void setSettingState() {
-    //
+    // Update this StatefulWidget
     setState(() {});
-
+    // Update the whole app
     rootState?.setState(() {});
   }
 }
@@ -255,19 +255,21 @@ class DevToolsSettings extends StatefulWidget {
     assert(() {
       // material grid and size construction lines are only available in checked mode
       widgets.addAll(<Widget>[
-        ListTile(
-          leading: const Icon(Icons.border_clear),
-          title: const Text('Show material grid'),
-          onTap: () {
-            con.debugShowMaterialGrid = !con.debugShowMaterialGrid;
-          },
-          trailing: Switch(
-            value: con.debugShowMaterialGrid,
-            onChanged: (bool value) {
-              con.debugShowMaterialGrid = value;
+        // Don't show the material grid if running in the Cupertino interface
+        if (!(con.state?.usingCupertino ?? false))
+          ListTile(
+            leading: const Icon(Icons.border_clear),
+            title: const Text('Show material grid'),
+            onTap: () {
+              con.debugShowMaterialGrid = !con.debugShowMaterialGrid;
             },
+            trailing: Switch(
+              value: con.debugShowMaterialGrid,
+              onChanged: (bool value) {
+                con.debugShowMaterialGrid = value;
+              },
+            ),
           ),
-        ),
         ListTile(
           leading: const Icon(Icons.border_all),
           title: const Text('Paint construction lines'),
@@ -347,6 +349,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
   @override
   void initState() {
     super.initState();
+    // Add the DevTools controller class
     add(widget.con);
   }
 

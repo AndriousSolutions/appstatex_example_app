@@ -25,7 +25,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends AppStateX<MyApp> {
   _MyAppState()
       : dev = DevTools(),
-        colorPicker = ColorPickerController(),
         con = MyHomePageController(),
         super(controller: MyAppController(), controllers: [
           Prefs(),
@@ -34,16 +33,17 @@ class _MyAppState extends AppStateX<MyApp> {
     app = controller as MyAppController;
   }
 
-  late MyAppController app;
   final DevTools dev;
-  final ColorPickerController colorPicker;
+  late MyAppController app;
   late MyHomePageController con;
-  late GoogleFontsController? fonts;
+  GoogleFontsController? googleFonts;
 
   @override
   void initState() {
     super.initState();
-    fonts = controllerByType<GoogleFontsController>();
+    // Since this controller uses a factory constructor, both achieves the same thing.
+    googleFonts = controllerByType<GoogleFontsController>();
+    googleFonts = GoogleFontsController();
   }
 
   // This widget is the root of your application
@@ -76,7 +76,7 @@ class _MyAppState extends AppStateX<MyApp> {
   Widget _materialView() {
     // The selected color scheme
     final colorScheme =
-        ColorScheme.fromSeed(seedColor: colorPicker.materialColor);
+        ColorScheme.fromSeed(seedColor: ColorPickerController().materialColor);
 
     return MaterialApp(
       debugShowMaterialGrid: dev.debugShowMaterialGrid,
@@ -88,7 +88,7 @@ class _MyAppState extends AppStateX<MyApp> {
         colorScheme: colorScheme,
         useMaterial3: dev.useMaterial3,
         textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: fonts?.font,
+              fontFamily: googleFonts?.font,
             ),
       ),
       locale: const Locale('en', 'CA'),
@@ -104,9 +104,9 @@ class _MyAppState extends AppStateX<MyApp> {
         appBar: AppBar(
           backgroundColor: colorScheme.inversePrimary,
           title: const Text('Flutter Demo Home Page'),
-          actions: [con.popupMenuButton],
+          actions: [app.popupMenuButton],
         ),
-        drawer: Drawer(child: con.drawer),
+        drawer: Drawer(child: app.drawer),
         body: const MyHomePage(),
         floatingActionButton: FloatingActionButton(
           onPressed: con.onPressed,
@@ -128,7 +128,7 @@ class _MyAppState extends AppStateX<MyApp> {
       theme: CupertinoThemeData(
         textTheme: CupertinoTextThemeData(
           textStyle: TextStyle(
-            fontFamily: fonts?.font,
+            fontFamily: googleFonts?.font,
           ),
         ),
       ),
@@ -163,13 +163,13 @@ class _MyAppState extends AppStateX<MyApp> {
                 CupertinoSliverNavigationBar(
                   largeTitle: Text(
                     'Counter Page Demo',
-                    style: TextStyle(fontFamily: fonts?.font),
+                    style: TextStyle(fontFamily: googleFonts?.font),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Material(child: con.popupMenuButton),
+                      Material(child: app.popupMenuButton),
                     ],
                   ),
                 ),
@@ -177,7 +177,7 @@ class _MyAppState extends AppStateX<MyApp> {
               ]);
             } else {
               //
-              return Drawer(child: con.drawer);
+              return Drawer(child: app.drawer);
             }
           }),
     );
