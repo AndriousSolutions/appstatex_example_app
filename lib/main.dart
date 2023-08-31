@@ -1,5 +1,3 @@
 import '_view.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());

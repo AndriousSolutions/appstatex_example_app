@@ -1,4 +1,10 @@
 
+## 1.3.0
+August 31, 2023
+- Add a Splash Screen
+- Demonstrating error handling
+- Custom ErrorWidget builder
+
 ## 1.2.0+1
 August 28, 2023
 - Most logic moved to MyAppController

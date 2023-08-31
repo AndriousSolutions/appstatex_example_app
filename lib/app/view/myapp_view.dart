@@ -25,16 +25,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends AppStateX<MyApp> {
   _MyAppState()
       : dev = DevTools(),
-        con = MyHomePageController(),
+        con = MyHomePageController(
+            initError: false), // Cause an error in initAsync() function
         super(controller: MyAppController(), controllers: [
           Prefs(),
           GoogleFontsController(),
         ]) {
-    app = controller as MyAppController;
+    appCon = controller as MyAppController;
   }
 
   final DevTools dev;
-  late MyAppController app;
+  late MyAppController appCon;
   late MyHomePageController con;
   GoogleFontsController? googleFonts;
 
@@ -51,6 +52,13 @@ class _MyAppState extends AppStateX<MyApp> {
   @override
   Widget buildIn(BuildContext context) {
     //
+    if (appCon.errorInBuild) {
+      // It'll trip again instantly and so don't trip it again.
+      appCon.errorInBuild = false;
+      // Invoke an error
+      throw AssertionError('Error in build!');
+    }
+
     assert(() {
       // Highlights UI while debugging.
       debug.debugPaintSizeEnabled = dev.debugPaintSizeEnabled;
@@ -63,7 +71,7 @@ class _MyAppState extends AppStateX<MyApp> {
     }());
 
     // Which interface design to display
-    if (app.useMaterial) {
+    if (appCon.useMaterial) {
       //
       return _materialView();
     } else {
@@ -83,7 +91,7 @@ class _MyAppState extends AppStateX<MyApp> {
       showPerformanceOverlay: dev.showPerformanceOverlay,
       showSemanticsDebugger: dev.showSemanticsDebugger,
       debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
-      title: app.title,
+      title: appCon.title,
       theme: ThemeData(
         colorScheme: colorScheme,
         useMaterial3: dev.useMaterial3,
@@ -104,9 +112,9 @@ class _MyAppState extends AppStateX<MyApp> {
         appBar: AppBar(
           backgroundColor: colorScheme.inversePrimary,
           title: const Text('Flutter Demo Home Page'),
-          actions: [app.popupMenuButton],
+          actions: [appCon.popupMenuButton],
         ),
-        drawer: Drawer(child: app.drawer),
+        drawer: Drawer(child: appCon.drawer),
         body: const MyHomePage(),
         floatingActionButton: FloatingActionButton(
           onPressed: con.onPressed,
@@ -124,7 +132,7 @@ class _MyAppState extends AppStateX<MyApp> {
       showPerformanceOverlay: dev.showPerformanceOverlay,
       showSemanticsDebugger: dev.showSemanticsDebugger,
       debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
-      title: app.title,
+      title: appCon.title,
       theme: CupertinoThemeData(
         textTheme: CupertinoTextThemeData(
           textStyle: TextStyle(
@@ -169,7 +177,7 @@ class _MyAppState extends AppStateX<MyApp> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Material(child: app.popupMenuButton),
+                      Material(child: appCon.popupMenuButton),
                     ],
                   ),
                 ),
@@ -177,9 +185,12 @@ class _MyAppState extends AppStateX<MyApp> {
               ]);
             } else {
               //
-              return Drawer(child: app.drawer);
+              return Drawer(child: appCon.drawer);
             }
           }),
     );
   }
+
+  @override
+  Widget? onSplashScreen(context) => SplashScreen();
 }

@@ -1,4 +1,7 @@
 ///
+export 'package:flutter/foundation.dart' show kDebugMode;
+
+///
 export 'package:flutter/material.dart';
 
 ///

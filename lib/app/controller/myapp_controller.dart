@@ -1,11 +1,20 @@
-///
 import '../../_controller.dart';
 
 import '../../_view.dart';
 
-class MyAppController extends StateXController {
-  factory MyAppController() => _this ??= MyAppController._();
-  MyAppController._() : fonts = GoogleFontsController();
+class MyAppController extends StateXController with handlesErrors {
+  factory MyAppController({bool? errorInBuild}) =>
+      _this ??= MyAppController._(errorInBuild);
+  MyAppController._([bool? errorInBuild]) : fonts = GoogleFontsController() {
+    // Record the current 'Error Widget'
+    errorWidgetBuilder = ErrorWidget.builder;
+    // Change the widget presented when another widget fails to build.
+    ErrorWidget.builder = (details) =>
+        AppWidgetErrorDisplayed(handler: this, stackTrace: kDebugMode)
+            .builder(details);
+    // Don't cause an error
+    this.errorInBuild = errorInBuild ?? false;
+  }
 
   static MyAppController? _this;
 
@@ -23,6 +32,13 @@ class MyAppController extends StateXController {
     // Interface design first displayed
     useMaterial = await Prefs.getBoolF('useMaterial', true);
     return true;
+  }
+
+  @override
+  void dispose() {
+    // Return Error Widget Builder
+    ErrorWidget.builder = errorWidgetBuilder;
+    super.dispose();
   }
 
   /// Dictate what is displayed in the Drawer

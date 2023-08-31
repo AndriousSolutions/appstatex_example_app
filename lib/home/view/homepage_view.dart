@@ -15,7 +15,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends StateX<MyHomePage> {
   _MyHomePageState()
-      : super(controller: MyHomePageController(), useInherited: true) {
+      : super(controller: MyHomePageController(), useInherited: false) {
     con = controller as MyHomePageController;
   }
 
@@ -33,6 +33,22 @@ class _MyHomePageState extends StateX<MyHomePage> {
 
   // The app's controller
   MyAppController? app;
+
+  /// Supply an 'error handler' routine if something goes wrong
+  /// in the corresponding runAsync() or initAsync() routine.
+  @override
+  void onAsyncError(FlutterErrorDetails details) {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: Error in onAsyncError for $state');
+    }
+  }
+
+  @override
+  void onError(details) {
+    // Have the controller handle the error
+    con.onError(details);
+  }
 
   // Place a breakpoint here and step through to see what's going on.
   @override

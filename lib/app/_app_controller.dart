@@ -2,7 +2,7 @@
 export 'controller/color_picker_controller.dart';
 
 ///
-export 'view/dev_settings.dart';
+export 'controller/error_controller.dart';
 
 ///
 export 'controller/google_fonts.dart';
