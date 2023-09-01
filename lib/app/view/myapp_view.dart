@@ -27,7 +27,7 @@ class _MyAppState extends AppStateX<MyApp> {
       : dev = DevTools(),
         con = MyHomePageController(
             initError: false), // Cause an error in initAsync() function
-        super(controller: MyAppController(), controllers: [
+        super(controller: MyAppController(errorInBuild: false), controllers: [
           Prefs(),
           GoogleFontsController(),
         ]) {
@@ -56,7 +56,7 @@ class _MyAppState extends AppStateX<MyApp> {
       // It'll trip again instantly and so don't trip it again.
       appCon.errorInBuild = false;
       // Invoke an error
-      throw AssertionError('Error in build!');
+      throw Exception('Error in build!');
     }
 
     assert(() {

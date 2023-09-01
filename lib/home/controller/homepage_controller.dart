@@ -34,6 +34,7 @@ class MyHomePageController extends StateXController with StateXonErrorMixin {
   // Note this controller is concerned with the conversion
   String get data => dataSource.count.toString();
 
+  /// Called by the State object's onPress named parameter
   void onPressed() {
     // No error handler when testing
     if (WidgetsBinding.instance is WidgetsFlutterBinding) {
@@ -47,12 +48,19 @@ class MyHomePageController extends StateXController with StateXonErrorMixin {
     });
   }
 
+  /// A means to handle errors possibly occurring in this controller
   @override
   void onError(details) {
-    // In a sense, we've recovered from the error
-    // Increment the count like no error occurred
-    setState(() {
-      dataSource.incrementCounter();
-    });
+    //
+    final message = details.exception.toString();
+
+    // Identify a particular exception
+    if (message.contains('Fake error to demonstrate error handling!')) {
+      // In a sense, we've recovered from the error
+      // Increment the count like no error occurred
+      setState(() {
+        dataSource.incrementCounter();
+      });
+    }
   }
 }

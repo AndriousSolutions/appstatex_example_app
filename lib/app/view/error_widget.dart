@@ -351,7 +351,11 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   }
 
   void _drawAppName(PaintingContext context, double top) {
-    final value = details?.context?.toDescription() ?? '';
+    var value = details?.context?.toDescription() ?? '';
+    final index = value.indexOf('-');
+    if (index > 0) {
+      value = value.substring(0, index);
+    }
     final builder = i.ParagraphBuilder(i.ParagraphStyle(
       textAlign: TextAlign.center,
     ))
