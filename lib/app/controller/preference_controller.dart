@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 import '../../_view.dart';
 
+///
+///  A complete package version found at: https://pub.dev/packages/prefs
+///
 class Prefs extends StateXController {
   //
   /// Loads and parses the [SharedPreferences] for this app from disk.

@@ -5,17 +5,18 @@ import '../../_view.dart';
 class MyAppController extends StateXController with handlesErrors {
   factory MyAppController({bool? errorInBuild}) =>
       _this ??= MyAppController._(errorInBuild);
-  MyAppController._([bool? errorInBuild]) : fonts = GoogleFontsController() {
+  // hidden constructor
+  MyAppController._([bool? errorInBuild]) {
     // Record the current 'Error Widget'
     errorWidgetBuilder = ErrorWidget.builder;
-    // Change the widget presented when another widget fails to build.
+    // Supply an 'error widget' when the intended widget fails to build.
     ErrorWidget.builder = (details) =>
         AppWidgetErrorDisplayed(handler: this, stackTrace: kDebugMode)
             .builder(details);
-    // Don't cause an error
+    // Don't cause an error in the 'build' function
     this.errorInBuild = errorInBuild ?? false;
   }
-
+  // Only one instance of this controller class
   static MyAppController? _this;
 
   ///
@@ -23,9 +24,6 @@ class MyAppController extends StateXController with handlesErrors {
 
   /// Flag indicating the preferred Interface design
   bool useMaterial = true;
-
-  /// Change the app's font
-  final GoogleFontsController fonts;
 
   @override
   Future<bool> initAsync() async {
@@ -71,23 +69,17 @@ class MyAppController extends StateXController with handlesErrors {
       onSelected: (value) {
         switch (value) {
           case 'to Cupertino':
-            Prefs.setBool('useMaterial', false);
-            useMaterial = false;
-            state?.setState(() {}); // As it happens, the 'first' State object
-            rootState?.setState(() {}); // rootState is the 'first' State object
+            _useMaterialDesign(use: false);
             break;
           case 'to Material':
-            Prefs.setBool('useMaterial', true);
-            useMaterial = true;
-            state?.setState(() {}); // As it happens, the 'first' State object
-            rootState?.setState(() {}); // rootState is the 'first' State object
+            _useMaterialDesign(use: true);
             break;
           case changeColor:
             ColorPickerController()
                 .changeColor(onChange: (_) => rootState?.setState(() {}));
             break;
           case changeFont:
-            fonts.changeFont();
+            GoogleFontsController().changeFont();
             break;
           default:
         }
@@ -97,5 +89,13 @@ class MyAppController extends StateXController with handlesErrors {
       elevation: 14,
     );
     return popupMenuButton;
+  }
+
+  // Set the appropriate flag and record the setting.
+  void _useMaterialDesign({required bool? use}) {
+    useMaterial = use ?? true;
+    Prefs.setBool('useMaterial', useMaterial);
+    state?.setState(() {}); // As it happens, it's the 'first' State object
+    rootState?.setState(() {}); // rootState is the 'first' State object
   }
 }

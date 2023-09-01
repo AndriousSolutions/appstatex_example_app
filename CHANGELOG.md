@@ -1,4 +1,10 @@
 
+## 1.3.2
+September 01, 2023
+- Documented MyAppController class
+- Corrected generated error messages
+- Consolidated repeated code
+
 ## 1.3.1
 August 31, 2023
 - Exception examples

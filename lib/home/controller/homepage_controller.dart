@@ -52,10 +52,14 @@ class MyHomePageController extends StateXController with StateXonErrorMixin {
   @override
   void onError(details) {
     //
-    final message = details.exception.toString();
+    var message = details.exception.toString();
+    final index = message.indexOf(': ');
+    if (index > 0) {
+      message = message.substring(index + 2);
+    }
 
     // Identify a particular exception
-    if (message.contains('Fake error to demonstrate error handling!')) {
+    if (message == 'Fake error to demonstrate error handling!') {
       // In a sense, we've recovered from the error
       // Increment the count like no error occurred
       setState(() {
