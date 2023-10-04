@@ -192,5 +192,5 @@ class _MyAppState extends AppStateX<MyApp> {
   }
 
   @override
-  Widget? onSplashScreen(context) => SplashScreen();
+  Widget? onSplashScreen(context) => const SplashScreen();
 }

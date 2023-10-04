@@ -29,6 +29,9 @@ class MyAppController extends StateXController with handlesErrors {
   Future<bool> initAsync() async {
     // Interface design first displayed
     useMaterial = await Prefs.getBoolF('useMaterial', true);
+
+    // Pretend there's some asynchronous operation to be performed before continuing.
+//    await Future<void>.delayed(const Duration(seconds: 20));
     return true;
   }
 

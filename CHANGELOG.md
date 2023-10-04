@@ -1,4 +1,9 @@
 
+## 1.4.0
+October 04, 2023
+- More event function in the home page
+- 
+
 ## 1.3.2
 September 01, 2023
 - Documented MyAppController class

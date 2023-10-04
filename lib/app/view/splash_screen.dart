@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 /// A very simple Splash screen
 class SplashScreen extends StatelessWidget {
   ///
-  SplashScreen({super.key});
+  const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => OverflowBox(
+  Widget build(BuildContext context) => const OverflowBox(
         minWidth: 0,
         minHeight: 0,
         maxWidth: double.infinity,
